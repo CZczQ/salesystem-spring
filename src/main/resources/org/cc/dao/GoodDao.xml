@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cc.dao.GoodDao">
+    <sql id="fir">
+        select * from good
+    </sql>
+    <insert id="addGood" parameterType="good">
+        insert into good(goodname,goodtype,price,pic) value(#{goodname},#{goodtype},#{price},#{pic})
+    </insert>
+    <select id="queryByCri" parameterType="map" resultType="good">
+        <include refid="fir"/>
+        <where>
+            <if test="id != null and id != ''">
+                id=#{id}
+            </if>
+            <if test="goodname != null and goodname != ''">
+                and goodname=#{goodname}
+            </if>
+            <if test="goodtype != null and goodtype != ''">
+                and goodtype=#{goodtype}
+            </if>
+        </where>
+    </select>
+    <select id="queryByPage" resultType="good">
+        <include refid="fir"/>
+    </select>
+    <select id="queryByCount" resultType="int">
+        select count(*) from good
+    </select>
+    <delete id="delete" parameterType="int">
+        delete from good where id = #{id}
+    </delete>
+    <select id="findById" parameterType="int" resultType="good">
+        <include refid="fir"/> where id=#{id}
+    </select>
+    <update id="update" parameterType="good">
+        update good set goodname=#{goodname},goodtype=#{goodtype},price=#{price} where id=#{id}
+    </update>
+    <select id="queryTypes" resultType="string">
+        select distinct goodtype from good
+    </select>
+    <select id="queryByType" parameterType="string" resultType="good">
+        select * from good where goodtype=#{goodtype}
+    </select>
+    
+</mapper>
